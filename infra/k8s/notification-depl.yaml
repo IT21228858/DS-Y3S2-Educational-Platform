@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+        - name: notification
+          image: educationalplatform/ds-notification:latest
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-srv
+spec:
+  selector:
+    app: notification
+  type: ClusterIP
+  ports:
+    - name: notification
+      protocol: TCP
+      port: 5005
+      targetPort: 5005

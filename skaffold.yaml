@@ -1,0 +1,65 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: educationalplatform/ds-frontend
+      context: frontend
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: src/**/*.js
+            dest: .
+    - image: educationalplatform/ds-auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: educationalplatform/ds-user
+      context: user
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: educationalplatform/ds-course
+      context: course
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: educationalplatform/ds-enrollment
+      context: enrollment
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: educationalplatform/ds-notification
+      context: notification
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: educationalplatform/ds-payment
+      context: payment
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .

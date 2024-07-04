@@ -1,0 +1,85 @@
+version: "3"
+services:
+  auth:
+    image: educationalplatform/ds-auth:latest
+    container_name: auth
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MONGO_URI=mongodb+srv://ds_user:7CpONEwCD0T67tTg@ds-project.fnkbyfm.mongodb.net/educational_platform_db
+      - JWT_SECRET=576520617265204465764372616674732e206465766372616674732e746f70
+    restart: unless-stopped
+
+  user:
+    image: educationalplatform/ds-user:latest
+    container_name: user
+    ports:
+      - "5002:5002"
+    environment:
+      - PORT=5002
+      - MONGO_URI=mongodb+srv://ds_user:7CpONEwCD0T67tTg@ds-project.fnkbyfm.mongodb.net/educational_platform_db
+      - JWT_SECRET=576520617265204465764372616674732e206465766372616674732e746f70
+    restart: unless-stopped
+
+  course:
+    image: educationalplatform/ds-course:latest
+    container_name: course
+    ports:
+      - "5003:5003"
+    environment:
+      - PORT=5003
+      - MONGO_URI=mongodb+srv://ds_user:7CpONEwCD0T67tTg@ds-project.fnkbyfm.mongodb.net/educational_platform_db
+      - JWT_SECRET=576520617265204465764372616674732e206465766372616674732e746f70
+    restart: unless-stopped
+
+  enrollment:
+    image: educationalplatform/ds-enrollment:latest
+    container_name: enrollment
+    ports:
+      - "5004:5004"
+    environment:
+      - PORT=5004
+      - MONGO_URI=mongodb+srv://ds_user:7CpONEwCD0T67tTg@ds-project.fnkbyfm.mongodb.net/educational_platform_db
+      - JWT_SECRET=576520617265204465764372616674732e206465766372616674732e746f70
+    restart: unless-stopped
+
+  notification:
+    image: educationalplatform/ds-notification:latest
+    container_name: notification
+    ports:
+      - "5005:5005"
+    environment:
+      - PORT=5005
+      - MONGO_URI=mongodb+srv://ds_user:7CpONEwCD0T67tTg@ds-project.fnkbyfm.mongodb.net/educational_platform_db
+      - JWT_SECRET=576520617265204465764372616674732e206465766372616674732e746f70
+      - APP_EMAIL=k33869315@gmail.com
+      - APP_PASSWORD=ggeanoklwtihcobd
+    restart: unless-stopped
+
+  payment:
+    image: educationalplatform/ds-payment:latest
+    container_name: payment
+    ports:
+      - "5006:5006"
+    environment:
+      - PORT=5006
+      - MONGO_URI=mongodb+srv://ds_user:7CpONEwCD0T67tTg@ds-project.fnkbyfm.mongodb.net/educational_platform_db
+      - JWT_SECRET=576520617265204465764372616674732e206465766372616674732e746f70
+      - STRIPE_SECRET_KEY=sk_test_51PCLB8LzTytoKoIDb68P0D3h2qK7yAaOwPd22Q5WYT3HpXTYtQ64ggXxI3pNwdEAdPkLdPQmJEfa2rpIhWa1sbXE00O5juaLD5
+    restart: unless-stopped
+
+  gateway:
+    image: educationalplatform/ds-gateway:latest
+    container_name: gateway
+    depends_on:
+      - auth
+      - user
+      - course
+      - enrollment
+      - notification
+      - payment
+
+    ports:
+      - "5000:5000"
+    restart: unless-stopped

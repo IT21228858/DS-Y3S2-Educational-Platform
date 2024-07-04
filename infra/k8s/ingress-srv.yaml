@@ -1,0 +1,61 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: educationalplatform.local
+      http:
+        paths:
+          - path: /api/auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-srv
+                port:
+                  number: 5001
+          - path: /api/user
+            pathType: Prefix
+            backend:
+              service:
+                name: user-srv
+                port:
+                  number: 5002
+          - path: /api/course
+            pathType: Prefix
+            backend:
+              service:
+                name: course-srv
+                port:
+                  number: 5003
+          - path: /api/enrollment
+            pathType: Prefix
+            backend:
+              service:
+                name: enrollment-srv
+                port:
+                  number: 5004
+          - path: /api/notification
+            pathType: Prefix
+            backend:
+              service:
+                name: notification-srv
+                port:
+                  number: 5005
+          - path: /api/payment
+            pathType: Prefix
+            backend:
+              service:
+                name: payment-srv
+                port:
+                  number: 5006
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-srv
+                port:
+                  number: 5173

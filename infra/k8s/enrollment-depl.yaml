@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enrollment-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: enrollment
+  template:
+    metadata:
+      labels:
+        app: enrollment
+    spec:
+      containers:
+        - name: enrollment
+          image: educationalplatform/ds-enrollment:latest
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: enrollment-srv
+spec:
+  selector:
+    app: enrollment
+  type: ClusterIP
+  ports:
+    - name: enrollment
+      protocol: TCP
+      port: 5004
+      targetPort: 5004
